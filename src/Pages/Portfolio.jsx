@@ -303,7 +303,7 @@ function Portfolio() {
       href="tel:+2347050896396"
       className="flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
     >
-      📞 Call Me +2347050896396
+      📞 Call Me
     </a>
 
     {/* LinkedIn */}
