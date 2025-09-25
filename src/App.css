@@ -40,3 +40,14 @@
 .read-the-docs {
   color: #888;
 }
+
+
+@keyframes skillWave {
+  0% { transform: translateX(-100%) skewX(-20deg); }
+  50% { transform: translateX(100%) skewX(20deg); }
+  100% { transform: translateX(-100%) skewX(-20deg); }
+}
+
+.animate-skill-wave {
+  animation: skillWave 3s infinite linear;
+}
