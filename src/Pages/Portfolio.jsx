@@ -242,7 +242,7 @@ function Portfolio() {
 </motion.section>
 
 
-      {/* Projects Section */}
+     {/* Projects Section */}
 <motion.section
   id="projects"
   className="w-full py-12 bg-gradient-to-br from-purple-800 via-purple-600 to-purple-500"
@@ -271,9 +271,9 @@ function Portfolio() {
       <motion.div
         key={index}
         className="bg-white border border-gray-200 rounded-xl shadow-md p-5 hover:shadow-lg transition"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: index * 0.1, duration: 0.6 }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: index * 0.15, duration: 0.6, type: "spring", stiffness: 100 }}
         whileHover={{ scale: 1.03 }}
       >
         <h3 className="text-xl font-bold text-purple-600 mb-2">
@@ -303,6 +303,7 @@ function Portfolio() {
     ))}
   </div>
 </motion.section>
+
 
       {/* About Section */}
       
