@@ -1,6 +1,7 @@
 import React, { useState} from "react";
 import { Github, ExternalLink, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Linkedin } from "lucide-react";
 
 
 function Portfolio() {
@@ -146,7 +147,7 @@ function Portfolio() {
       {/* Hero Section */}
       <section
         id="home"
-        className="w-full min-h-screen flex flex-col md:flex-row items-center justify-center md:justify-between px-4 md:px-20 py-16 bg-gradient-to-br from-purple-500 via-purple-600 to-purple-800 dark:bg-gradient-to-br dark:from-gray-800 dark:via-gray-900 dark:to-black"
+        className="w-full min-h-screen flex flex-col md:flex-row items-center justify-center md:justify-between px-4 md:px-20 py-16 bg-gradient-to-br from-purple-500 via-purple-600 to-purple-800"
       >
         {/* Left Text */}
         <motion.div
@@ -162,7 +163,7 @@ function Portfolio() {
             <span className="text-white">Ajibade</span>
           </h1>
           <p className="text-purple-100 text-lg max-w-md mx-auto md:mx-0">
-            I’m a passionate Web Developer based in Nigeria, specializing in
+            I’m a passionate Web Developer based in Nigeria, specialized in
             crafting modern, responsive, and high-performance websites. I focus
             on creating user-friendly interfaces and seamless experiences while
             delivering business value.
@@ -242,26 +243,28 @@ function Portfolio() {
 </motion.section>
 
 
-     {/* Projects Section */}
+   {/* Projects Section */}
 <motion.section
   id="projects"
   className="w-full py-12 bg-gradient-to-br from-purple-800 via-purple-600 to-purple-500"
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
   variants={{
+    hidden: {},
     visible: {
       transition: {
-        staggerChildren: 0.2, // stagger each project card
+        staggerChildren: 0.2,
       },
     },
   }}
+  initial="hidden"
+  whileInView="visible"
+  viewport={{ once: true, amount: 0.2 }}
 >
   <motion.h2
     className="text-3xl font-semibold text-center mb-8 text-white"
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
+    variants={{
+      hidden: { opacity: 0, y: -20 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+    }}
   >
     Projects
   </motion.h2>
@@ -271,9 +274,15 @@ function Portfolio() {
       <motion.div
         key={index}
         className="bg-white border border-gray-200 rounded-xl shadow-md p-5 hover:shadow-lg transition"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: index * 0.15, duration: 0.6, type: "spring", stiffness: 100 }}
+        variants={{
+          hidden: { opacity: 0, scale: 0.8, y: 30 },
+          visible: {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            transition: { duration: 0.6, type: "spring", stiffness: 100 },
+          },
+        }}
         whileHover={{ scale: 1.03 }}
       >
         <h3 className="text-xl font-bold text-purple-600 mb-2">
@@ -426,16 +435,17 @@ function Portfolio() {
 
     {/* LinkedIn */}
     <motion.a
-      href="https://www.linkedin.com/in/toluwalope-ajibade-948861268/"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
-      variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-      whileHover={{ scale: 1.05, y: -2 }}
-      whileTap={{ scale: 0.95 }}
-    >
-      💼 LinkedIn
-    </motion.a>
+  href="https://www.linkedin.com/in/toluwalope-ajibade-948861268/"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+  whileHover={{ scale: 1.05, y: -2 }}
+  whileTap={{ scale: 0.95 }}
+>
+  <Linkedin className="w-5 h-5 text-blue-600" />
+  LinkedIn
+</motion.a>
   </motion.div>
 
   <motion.p
