@@ -366,7 +366,7 @@ function Portfolio() {
     className="block mt-2"
     variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
   >
-    My goal is simple: to solve real problems through clean code and thoughtful design 🌟—whether it’s simplifying workflows, creating intuitive user interfaces, or bringing innovative ideas to life.
+    My goal is simple: to solve real problems through clean code and thoughtful design,whether it’s simplifying workflows, creating intuitive user interfaces, or bringing innovative ideas to life.
   </motion.span>
 </motion.p>
 
