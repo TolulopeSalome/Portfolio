@@ -1,11 +1,53 @@
-import React, { useState} from "react";
-import { Github, ExternalLink, Menu, X } from "lucide-react";
+import React, { useState, useEffect} from "react";
+import { Github, ExternalLink, Menu, X, Linkedin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Linkedin } from "lucide-react";
 
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+  return isMobile;
+}
 function Portfolio() {
   const [isOpen, setIsOpen] = useState(false);
+
+  const isMobile = useIsMobile();
+
+  // small hook to detect mobile screens
+
+
+
+// floating animations — only enabled on desktop
+const floatingAnim = !isMobile
+  ? {
+      // we use `animate` + `transition` here; keep `variants` separate
+      animate: { y: [0, -5, 0] },
+      transition: {
+        duration: 3,
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut",
+      },
+    }
+  : {};
+
+const floatingBtnAnim = !isMobile
+  ? {
+      animate: { y: [0, -5, 0] },
+      transition: {
+        duration: 2,
+        repeat: Infinity,
+        repeatType: "loop",
+        ease: "easeInOut",
+      },
+    }
+  : {};
+  // Sample project data
 
 
   const projects = [
@@ -71,13 +113,13 @@ function Portfolio() {
 <motion.nav
   className="w-full flex justify-between items-center py-3 px-4 md:px-20 shadow-sm bg-white relative"
   initial={{ y: -50, opacity: 0 }}
-  animate={{ y: 0, opacity: 1 }}
+  whileInView={{ y: 0, opacity: 1 }}
   transition={{ duration: 0.6, ease: "easeOut" }}
 >
   <motion.h1
     className="text-xl font-bold md:text-2xl text-purple-600"
     initial={{ opacity: 0, x: -20 }}
-    animate={{ opacity: 1, x: 0 }}
+    whileInView={{ opacity: 1, x: 0 }}
     transition={{ delay: 0.2, duration: 0.5 }}
   >
     Tolulope Ajibade
@@ -87,7 +129,8 @@ function Portfolio() {
   <motion.div
     className="hidden md:flex gap-8 text-gray-700"
     initial={{ opacity: 0, x: 20 }}
-    animate={{ opacity: 1, x: 0 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
     transition={{ delay: 0.3, duration: 0.5 }}
   >
     {links.map((link) => (
@@ -131,7 +174,8 @@ function Portfolio() {
             className="py-2 text-gray-700 hover:text-purple-600 transition font-semibold text-sm"
             onClick={() => setIsOpen(false)}
             initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.3 }}
           >
@@ -153,7 +197,8 @@ function Portfolio() {
         <motion.div
           className="md:w-1/2 space-y-6 text-center md:text-left"
           initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          whileInView={{ opacity: 1, x: 0 }}
+        
           transition={{ duration: 1 }}
         >
           <p className="text-purple-100 text-lg">Hey, I’m </p>
@@ -191,11 +236,12 @@ function Portfolio() {
         <motion.div
           className="md:w-1/2 flex justify-center mt-6 md:mt-0"
           initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.3 }}
         >
           <img
-            src="/portfolio img.jpg"
+            src="/portfolio-img.webp"
             alt="Profile"
             className="w-56 md:w-72 h-56 md:h-72 rounded-full object-cover border-4 border-white shadow-lg"
           />
@@ -218,7 +264,7 @@ function Portfolio() {
   <motion.h2
     className="text-3xl font-semibold text-purple-600 mb-6"
     initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
+    whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
   >
     My Skills
@@ -230,13 +276,17 @@ function Portfolio() {
         key={skill}
         className="px-3 py-1 border border-gray-300 rounded-full text-purple-700 bg-gray-50 shadow-sm text-sm relative overflow-hidden cursor-pointer"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        whileFocus={{opacity:3, y: 2}}
+        
         transition={{ delay: index * 0.1, duration: 0.6 }}
         whileHover={{ scale: 1.1 }}
       >
         {skill}
-        {/* Water ripple effect using pseudo-element */}
-        <span className="absolute inset-0 bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 opacity-20 animate-skill-wave pointer-events-none rounded-full"></span>
+       {!isMobile && (
+  <span className="absolute inset-0 bg-gradient-to-r from-purple-200 via-purple-400 to-purple-200 opacity-20 animate-skill-wave pointer-events-none rounded-full"></span>
+)}
+
       </motion.span>
     ))}
   </div>
@@ -264,6 +314,7 @@ function Portfolio() {
     variants={{
       hidden: { opacity: 0, y: -20 },
       visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+
     }}
   >
     Projects
@@ -284,6 +335,10 @@ function Portfolio() {
           },
         }}
         whileHover={{ scale: 1.03 }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+
       >
         <h3 className="text-xl font-bold text-purple-600 mb-2">
           {project.title}
@@ -314,8 +369,7 @@ function Portfolio() {
 </motion.section>
 
 
-      {/* About Section */}
-      
+{/* About Section */}
 <motion.section
   id="about"
   className="py-12 w-full bg-gray-50 text-center"
@@ -327,65 +381,68 @@ function Portfolio() {
   <motion.h2
     className="text-3xl font-semibold mb-6 text-purple-600"
     initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
     transition={{ delay: 0.1, duration: 0.6 }}
   >
     About Me
   </motion.h2>
 
-<motion.p
-  className="max-w-3xl mx-auto text-gray-700 text-lg bg-white rounded-xl p-6 shadow"
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true }}
-  animate={{ y: [0, -5, 0] }} // gentle floating
-  transition={{ duration: 3, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
-  variants={{
-    visible: {
-      transition: {
-        staggerChildren: 0.3, // stagger line-by-line
+  <motion.p
+    className="max-w-3xl mx-auto text-gray-700 text-lg bg-white rounded-xl p-6 shadow"
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true }}   //  animate once
+    {...floatingAnim}           //  floating only on desktop
+    variants={{
+      visible: {
+        transition: {
+          staggerChildren: 0.3, // stagger all children
+        },
       },
-    },
-  }}
->
-  <motion.span
-    className="block"
-    variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+    }}
   >
-    I’m <span className="font-semibold text-purple-600">Tolulope Ajibade</span>, a solution–driven Web Developer passionate about transforming challenges into digital opportunities.
-  </motion.span>
+    <motion.span
+      className="block"
+      variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+      viewport={{ once: true }}
+    >
+      I’m <span className="font-semibold text-purple-600">Tolulope Ajibade</span>, 
+      a solution driven Web Developer passionate about transforming challenges into digital opportunities.
+    </motion.span>
 
-  <motion.span
-    className="block mt-2"
-    variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-  >
-    I specialize in building modern, responsive applications, ensuring every project is not only visually appealing but also efficient, accessible, and user-friendly.
-  </motion.span>
+    <motion.span
+      className="block mt-2"
+      variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+      viewport={{ once: true }}
+    >
+      I specialize in building modern, responsive applications, ensuring every project is not only visually appealing 
+      but also efficient, accessible, and user-friendly.
+    </motion.span>
 
-  <motion.span
-    className="block mt-2"
-    variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-  >
-    My goal is simple: to solve real problems through clean code and thoughtful design 🌟—whether it’s simplifying workflows, creating intuitive user interfaces, or bringing innovative ideas to life.
-  </motion.span>
-</motion.p>
-
-
-
+    <motion.span
+      className="block mt-2"
+      variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+      viewport={{ once: true }}
+    >
+      My goal is simple: to solve real problems through clean code and thoughtful design, whether it’s simplifying workflows, creating intuitive user interfaces, or bringing innovative ideas to life.
+    </motion.span>
+  </motion.p>
 </motion.section>
 
 
-     {/* Contact Section */}
+
+    {/* Contact Section */}
 <motion.section
   id="contact"
   className="py-12 w-full flex flex-col items-center"
   initial="hidden"
   whileInView="visible"
-  viewport={{ once: true }}
+  viewport={{ once: true }}   // ✅ run once
   variants={{
     visible: {
       transition: {
-        staggerChildren: 0.3, // stagger all children
+        staggerChildren: 0.3, // ✅ stagger all children
       },
     },
   }}
@@ -393,6 +450,7 @@ function Portfolio() {
   <motion.h2
     className="text-3xl font-semibold mb-6 text-purple-600"
     variants={{ hidden: { opacity: 0, y: -20 }, visible: { opacity: 1, y: 0 } }}
+    viewport={{ once: true }}
   >
     Get In Touch
   </motion.h2>
@@ -400,6 +458,7 @@ function Portfolio() {
   <motion.p
     className="mb-6 text-center max-w-md text-gray-600"
     variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+    viewport={{ once: true }}
   >
     Click the button below to send me an email directly from your email client or use any of the other contact options below.
   </motion.p>
@@ -411,8 +470,10 @@ function Portfolio() {
     whileHover={{ scale: 1.08 }}
     whileTap={{ scale: 0.95 }}
     variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-    animate={{ y: [0, -5, 0] }} // floating effect
-    transition={{ duration: 2, repeat: Infinity, repeatType: "loop", ease: "easeInOut" }}
+    viewport={{ once: true }}
+    whileFocus={{scale: 1.05}}
+
+    {...floatingBtnAnim}   
   >
     📧 Email Me
   </motion.a>
@@ -420,7 +481,7 @@ function Portfolio() {
   {/* Extra Contact Options */}
   <motion.div
     className="mt-6 flex flex-col sm:flex-row gap-4 text-center"
-    variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.2 } } }} // stagger buttons
+    variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
   >
     {/* Phone */}
     <motion.a
@@ -429,28 +490,32 @@ function Portfolio() {
       variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
       whileHover={{ scale: 1.05, y: -2 }}
       whileTap={{ scale: 0.95 }}
+      viewport={{ once: true }}
+
     >
       📞 Call Me
     </motion.a>
 
     {/* LinkedIn */}
     <motion.a
-  href="https://www.linkedin.com/in/toluwalope-ajibade-948861268/"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
-  variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-  whileHover={{ scale: 1.05, y: -2 }}
-  whileTap={{ scale: 0.95 }}
->
-  <Linkedin className="w-5 h-5 text-blue-600" />
-  LinkedIn
-</motion.a>
+      href="https://www.linkedin.com/in/toluwalope-ajibade-948861268/"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 px-5 py-3 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-100 transition"
+      variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
+      whileHover={{ scale: 1.05, y: -2 }}
+      whileTap={{ scale: 0.95 }}
+      viewport={{ once: true }}
+    >
+      <Linkedin className="w-5 h-5 text-blue-600" />
+      LinkedIn
+    </motion.a>
   </motion.div>
 
   <motion.p
     className="mt-6 text-sm text-gray-500"
     variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+    viewport={{ once: true }}
   >
     Or reach me at: <span className="font-medium">toluwalopeajibade@gmail.com</span>
   </motion.p>
